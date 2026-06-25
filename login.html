@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Bio Health TI — Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--teal:#0D7377;--teal-lt:#14ACAC;--teal-bg:#E6F6F6;--teal-dk:#094F52;--green:#32936F;--green-bg:#E8F5EF;--red:#B91C1C;--red-bg:#FEE2E2;--gray-200:#D9E2E2;--gray-400:#8FA8A8;--gray-600:#4A6565;--gray-800:#1F3333}
+body{font-family:'DM Sans',sans-serif;background:linear-gradient(160deg,var(--teal-dk) 0%,#0a6b6f 60%,#0e8a8e 100%);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;overflow:hidden;position:relative}
+body::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='40' cy='40' r='1.5' fill='rgba(255,255,255,.04)'/%3E%3C/svg%3E");pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:.18;pointer-events:none}
+.blob1{width:400px;height:400px;background:var(--teal-lt);top:-100px;right:-100px}
+.blob2{width:300px;height:300px;background:#1ae0e0;bottom:-80px;left:-80px}
+.wrap{width:100%;max-width:420px;position:relative;z-index:1}
+.logo-wrap{display:flex;flex-direction:column;align-items:center;margin-bottom:2rem}
+.logo-mark{width:52px;height:52px;background:linear-gradient(135deg,var(--teal-lt),var(--teal));border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(20,172,172,.35);margin-bottom:12px}
+.logo-mark svg{width:26px;height:26px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.logo-wrap h1{font-family:'DM Serif Display',serif;font-size:26px;color:#fff}
+.logo-wrap p{font-size:13px;color:rgba(255,255,255,.6);margin-top:4px}
+.card{background:#fff;border-radius:18px;padding:2rem;box-shadow:0 20px 60px rgba(9,79,82,.3)}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:#EEF2F2;border-radius:10px;padding:4px;margin-bottom:1.75rem}
+.tab{border:none;background:transparent;border-radius:7px;padding:9px;font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;color:var(--gray-400);transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px}
+.tab svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tab.on{background:#fff;color:var(--teal-dk);box-shadow:0 1px 4px rgba(13,115,119,.12)}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.field label{font-size:12px;font-weight:600;color:var(--gray-600);text-transform:uppercase;letter-spacing:.05em}
+.inp-wrap{position:relative}
+.inp-wrap svg.ico{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:15px;height:15px;fill:none;stroke:var(--gray-400);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.inp-wrap input{width:100%;border:1px solid var(--gray-200);border-radius:8px;padding:11px 12px 11px 36px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--gray-800);outline:none;transition:border .15s,box-shadow .15s}
+.inp-wrap input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(13,115,119,.1)}
+.inp-wrap input::placeholder{color:var(--gray-400)}
+.eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);border:none;background:none;cursor:pointer;color:var(--gray-400);padding:4px;display:flex}
+.eye svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.btn-login{width:100%;padding:13px;background:var(--teal);color:#fff;border:none;border-radius:9px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s;margin-top:4px}
+.btn-login:hover{background:var(--teal-dk)}
+.btn-login:disabled{opacity:.6;cursor:not-allowed}
+.btn-login svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.alert{border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:14px;display:none;align-items:center;gap:8px}
+.alert svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.alert.err{background:var(--red-bg);border:1px solid #FECACA;color:var(--red)}
+.alert.ok{background:var(--green-bg);border:1px solid #6EE7B7;color:var(--green)}
+.hint{font-size:12px;color:var(--gray-400);text-align:center;margin-top:1.25rem;line-height:1.6}
+.hint strong{color:var(--teal)}
+</style>
+</head>
+<body>
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+<div class="wrap">
+  <div class="logo-wrap">
+    <div class="logo-mark"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+    <h1>Bio Health</h1>
+    <p>Central de Suporte de TI</p>
+  </div>
+  <div class="card">
+    <div class="tabs">
+      <button class="tab on" id="tab-user" onclick="switchTab('user')">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Colaborador
+      </button>
+      <button class="tab" id="tab-admin" onclick="switchTab('admin')">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Admin TI
+      </button>
+    </div>
+    <div class="alert err" id="alert-err"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span id="err-msg"></span></div>
+    <div class="alert ok" id="alert-ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span id="ok-msg"></span></div>
+    <div class="field">
+      <label>E-mail</label>
+      <div class="inp-wrap">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <input type="email" id="email" placeholder="seu@biohealth.com.br" onkeydown="if(event.key==='Enter')doLogin()"/>
+      </div>
+    </div>
+    <div class="field">
+      <label>Senha</label>
+      <div class="inp-wrap">
+        <svg class="ico" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <input type="password" id="senha" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
+        <button class="eye" onclick="toggleEye()" tabindex="-1"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+      </div>
+    </div>
+    <button class="btn-login" id="btn-login" onclick="doLogin()">
+      <svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>Entrar
+    </button>
+    <div class="hint">Acesso restrito a colaboradores Bio Health.<br>Dúvidas? <strong>suporte@biohealth.com.br</strong></div>
+  </div>
+</div>
+<script>
+// ⚙️ Troque pelo endereço do seu servidor
+const API = 'http://localhost:8000';
+
+var tab = 'user';
+function switchTab(t){tab=t;document.getElementById('tab-user').classList.toggle('on',t==='user');document.getElementById('tab-admin').classList.toggle('on',t==='admin');hideAlerts()}
+function toggleEye(){var i=document.getElementById('senha');i.type=i.type==='password'?'text':'password'}
+function showErr(m){var e=document.getElementById('alert-err');document.getElementById('err-msg').textContent=m;e.style.display='flex';document.getElementById('alert-ok').style.display='none'}
+function showOk(m){var e=document.getElementById('alert-ok');document.getElementById('ok-msg').textContent=m;e.style.display='flex';document.getElementById('alert-err').style.display='none'}
+function hideAlerts(){document.getElementById('alert-err').style.display='none';document.getElementById('alert-ok').style.display='none'}
+
+async function doLogin(){
+  var email=document.getElementById('email').value.trim();
+  var senha=document.getElementById('senha').value;
+  if(!email||!senha){showErr('Preencha e-mail e senha.');return}
+  var btn=document.getElementById('btn-login');
+  btn.disabled=true;btn.textContent='Entrando...';
+  try{
+    var res=await fetch(API+'/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,senha})});
+    var data=await res.json();
+    if(!res.ok){showErr(data.detail||'Erro ao fazer login.');btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>Entrar';return}
+    if(tab==='admin'&&data.usuario.role!=='admin'){showErr('Sua conta não tem permissão de administrador.');btn.disabled=false;btn.innerHTML='Entrar';return}
+    if(tab==='user'&&data.usuario.role==='admin'){showErr('Use a aba "Admin TI" para entrar como administrador.');btn.disabled=false;btn.innerHTML='Entrar';return}
+    sessionStorage.setItem('bh_token',data.token);
+    sessionStorage.setItem('bh_user',JSON.stringify(data.usuario));
+    showOk('Login realizado! Redirecionando...');
+    setTimeout(()=>{window.location.href=data.usuario.role==='admin'?'admin.html':'portal.html'},800);
+  }catch(e){showErr('Não foi possível conectar ao servidor. Verifique se o backend está rodando.');btn.disabled=false;btn.innerHTML='Entrar'}
+}
+
+// Redireciona se já logado
+var t=sessionStorage.getItem('bh_token');
+var u=sessionStorage.getItem('bh_user');
+if(t&&u){try{var pu=JSON.parse(u);window.location.href=pu.role==='admin'?'admin.html':'portal.html'}catch(e){}}
+</script>
+</body>
+</html>

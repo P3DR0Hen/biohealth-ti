@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Bio Health TI — Painel Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --teal:#0D7377;--teal-lt:#14ACAC;--teal-bg:#E6F6F6;--teal-dk:#094F52;
+  --green:#32936F;--green-bg:#E8F5EF;--amber:#B45309;--amber-bg:#FEF3C7;
+  --red:#B91C1C;--red-bg:#FEE2E2;--purple:#6D28D9;--purple-bg:#EDE9FE;
+  --gray-50:#F8FAFA;--gray-100:#EEF2F2;--gray-200:#D9E2E2;
+  --gray-400:#8FA8A8;--gray-600:#4A6565;--gray-800:#1F3333;
+  --shadow:0 1px 4px rgba(13,115,119,.08),0 4px 16px rgba(13,115,119,.06);
+}
+body{font-family:'DM Sans',sans-serif;background:var(--gray-50);color:var(--gray-800);min-height:100vh;font-size:15px}
+.layout{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+.sidebar{background:var(--teal-dk);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sb-logo{display:flex;align-items:center;gap:10px;padding:1.25rem}
+.logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--teal-lt),var(--teal));border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-mark svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.logo-text{font-family:'DM Serif Display',serif;font-size:17px;color:#fff}
+.sb-user{margin:0 .75rem .5rem;background:rgba(255,255,255,.07);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px}
+.sb-av{width:32px;height:32px;border-radius:50%;background:var(--teal-lt);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.sb-uname{font-size:12px;font-weight:600;color:#fff}
+.sb-urole{font-size:10px;color:rgba(255,255,255,.5)}
+.sb-label{font-size:10px;font-weight:600;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.1em;padding:.6rem 1.25rem .3rem}
+.sb-nav{list-style:none;padding:0 .75rem;flex:1}
+.sb-nav li{margin-bottom:2px}
+.sb-nav a{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;color:rgba(255,255,255,.65);text-decoration:none;font-size:13px;font-weight:500;transition:all .15s;cursor:pointer}
+.sb-nav a:hover,.sb-nav a.on{background:rgba(255,255,255,.1);color:#fff}
+.sb-nav a svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.sb-badge{margin-left:auto;background:rgba(255,255,255,.15);border-radius:20px;padding:2px 8px;font-size:11px;font-weight:600}
+.sb-footer{padding:1rem .75rem;border-top:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:4px}
+.sb-footer a{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.5);font-size:12px;text-decoration:none;padding:7px 10px;border-radius:7px;transition:all .15s;cursor:pointer}
+.sb-footer a:hover{background:rgba(255,255,255,.08);color:rgba(255,255,255,.8)}
+.sb-footer svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.page{display:flex;flex-direction:column}
+.topbar{background:#fff;border-bottom:1px solid var(--gray-200);padding:.9rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar-title{font-family:'DM Serif Display',serif;font-size:20px}
+.topbar-right{display:flex;gap:10px}
+.tb-btn{border:1px solid var(--gray-200);border-radius:7px;padding:7px 14px;background:#fff;font-size:13px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;color:var(--gray-600);display:flex;align-items:center;gap:6px;transition:background .12s}
+.tb-btn:hover{background:var(--gray-100)}
+.tb-btn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tb-btn.primary{background:var(--teal);border-color:var(--teal);color:#fff}
+.tb-btn.primary:hover{background:var(--teal-dk)}
+.content{padding:1.75rem 2rem;flex:1}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:1.75rem}
+.kpi{background:#fff;border:1px solid var(--gray-200);border-radius:12px;padding:1.1rem 1.25rem;box-shadow:var(--shadow)}
+.kpi-lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.kpi-lbl svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.kpi-val{font-family:'DM Serif Display',serif;font-size:28px;line-height:1;margin-bottom:4px}
+.kpi-sub{font-size:12px;color:var(--gray-400)}
+.card{background:#fff;border:1px solid var(--gray-200);border-radius:12px;box-shadow:var(--shadow);margin-bottom:1.5rem;overflow:hidden}
+.card-hd{padding:1rem 1.5rem;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;gap:10px}
+.card-hd h2{font-size:15px;font-weight:600;flex:1}
+.card-hd-ico{width:30px;height:30px;background:var(--teal-bg);border-radius:7px;display:flex;align-items:center;justify-content:center}
+.card-hd-ico svg{width:15px;height:15px;fill:none;stroke:var(--teal);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.filters{padding:.75rem 1.5rem;border-bottom:1px solid var(--gray-100);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.fchip{border:1px solid var(--gray-200);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:500;cursor:pointer;background:#fff;color:var(--gray-600);font-family:'DM Sans',sans-serif;transition:all .12s}
+.fchip:hover,.fchip.on{background:var(--teal-bg);border-color:var(--teal-lt);color:var(--teal-dk)}
+.search-b{flex:1;min-width:180px}
+.search-b input{width:100%;border:1px solid var(--gray-200);border-radius:7px;padding:7px 10px 7px 32px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238FA8A8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat 8px center;transition:border .15s}
+.search-b input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(13,115,119,.1)}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead tr{background:var(--gray-50)}
+th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--gray-200);white-space:nowrap}
+td{padding:11px 14px;border-bottom:1px solid var(--gray-100);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--gray-50)}
+.badge{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.td-title{font-weight:500;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.td-num{font-family:'DM Serif Display',serif;font-size:13px;color:var(--teal)}
+.td-date{color:var(--gray-400);font-size:12px;white-space:nowrap}
+.action-btn{border:1px solid var(--gray-200);border-radius:6px;padding:5px 10px;font-size:12px;font-weight:500;cursor:pointer;background:#fff;color:var(--gray-600);font-family:'DM Sans',sans-serif;transition:all .12s}
+.action-btn:hover{background:var(--teal-bg);border-color:var(--teal-lt);color:var(--teal-dk)}
+.empty-table{padding:3rem;text-align:center;color:var(--gray-400);font-size:14px}
+.empty-table svg{width:36px;height:36px;fill:none;stroke:var(--gray-200);stroke-width:1.5;display:block;margin:0 auto 10px}
+/* USERS */
+.u-av{width:30px;height:30px;border-radius:50%;background:var(--teal-bg);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--teal-dk)}
+.u-info{display:flex;align-items:center;gap:10px}
+.toggle-btn{border:none;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.ton{background:var(--red-bg);color:var(--red)}.ton:hover{background:#FECACA}
+.toff{background:var(--green-bg);color:var(--green)}.toff:hover{background:#A7F3D0}
+.del-btn{border:1px solid var(--gray-200);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;background:#fff;color:var(--gray-600);font-family:'DM Sans',sans-serif}
+.del-btn:hover{background:var(--red-bg);border-color:#FECACA;color:var(--red)}
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(9,79,82,.5);z-index:500;align-items:center;justify-content:center;padding:1rem}
+.overlay.open{display:flex}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:520px;box-shadow:0 20px 60px rgba(9,79,82,.25);max-height:90vh;overflow-y:auto}
+.modal-hd{padding:1.25rem 1.5rem;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between}
+.modal-hd h3{font-family:'DM Serif Display',serif;font-size:18px}
+.modal-close{border:none;background:none;cursor:pointer;color:var(--gray-400);font-size:22px;line-height:1;padding:4px}
+.modal-close:hover{color:var(--gray-800)}
+.modal-body{padding:1.5rem;display:flex;flex-direction:column;gap:12px}
+.m-row{display:flex;gap:8px}
+.m-lbl{font-size:12px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:.05em;width:110px;flex-shrink:0;padding-top:2px}
+.m-val{font-size:14px;font-weight:500;flex:1}
+.m-val.desc{font-weight:400;line-height:1.6;color:var(--gray-600)}
+.modal-actions{padding:1rem 1.5rem;border-top:1px solid var(--gray-100);display:flex;gap:10px;flex-wrap:wrap}
+.m-sel{border:1px solid var(--gray-200);border-radius:7px;padding:8px 12px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;flex:1;color:var(--gray-800)}
+.m-sel:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(13,115,119,.1)}
+.m-obs{border:1px solid var(--gray-200);border-radius:7px;padding:8px 12px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;width:100%;resize:none;min-height:70px;color:var(--gray-800)}
+.m-obs:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(13,115,119,.1)}
+.m-save{padding:10px 20px;border:none;border-radius:7px;background:var(--teal);color:#fff;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer}
+.m-save:hover{background:var(--teal-dk)}
+.m-cancel{padding:10px 16px;border:1px solid var(--gray-200);border-radius:7px;background:#fff;color:var(--gray-600);font-size:14px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer}
+/* USER FORM */
+.uf-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.uf-field{display:flex;flex-direction:column;gap:5px}
+.uf-field label{font-size:12px;font-weight:600;color:var(--gray-600);text-transform:uppercase;letter-spacing:.05em}
+.uf-field input,.uf-field select{border:1px solid var(--gray-200);border-radius:7px;padding:9px 12px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--gray-800);outline:none;width:100%;transition:border .15s}
+.uf-field input:focus,.uf-field select:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(13,115,119,.1)}
+.uf-field input::placeholder{color:var(--gray-400)}
+.uf-actions{display:flex;gap:10px;justify-content:flex-end}
+.btn-add{padding:9px 20px;border:none;border-radius:7px;background:var(--teal);color:#fff;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer}
+.btn-add:hover{background:var(--teal-dk)}
+.btn-cancel-sm{padding:9px 16px;border:1px solid var(--gray-200);border-radius:7px;background:#fff;color:var(--gray-600);font-size:14px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer}
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--gray-800);color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:500;display:none;z-index:1000;box-shadow:0 4px 20px rgba(0,0,0,.2);align-items:center;gap:8px}
+.toast.show{display:flex}
+.toast svg{width:16px;height:16px;fill:none;stroke:var(--teal-lt);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{display:none}.kpis{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:580px){.kpis{grid-template-columns:1fr}.content{padding:1rem}.uf-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="sb-logo"><div class="logo-mark"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><span class="logo-text">Bio Health</span></div>
+  <div class="sb-user"><div class="sb-av" id="sb-av">A</div><div><div class="sb-uname" id="sb-uname">Admin</div><div class="sb-urole">Administrador TI</div></div></div>
+  <div class="sb-label">Painel</div>
+  <ul class="sb-nav">
+    <li><a class="on" onclick="showTab('chamados')"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard <span class="sb-badge" id="sb-open">0</span></a></li>
+    <li><a onclick="filterStatus('Aberto')"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2M9 5h6"/></svg>Abertos</a></li>
+    <li><a onclick="filterStatus('Em andamento')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Em andamento</a></li>
+    <li><a onclick="filterStatus('Resolvido')"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Resolvidos</a></li>
+    <li><a onclick="showTab('usuarios')"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Usuários</a></li>
+  </ul>
+  <div class="sb-footer">
+    <a href="portal.html"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Portal do usuário</a>
+    <a onclick="logout()"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sair</a>
+  </div>
+</aside>
+
+<div class="page">
+  <div class="topbar">
+    <div class="topbar-title" id="page-title">Painel de TI</div>
+    <div class="topbar-right">
+      <button class="tb-btn primary" onclick="window.location.href='portal.html'"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Novo chamado</button>
+    </div>
+  </div>
+  <div class="content">
+
+    <!-- CHAMADOS -->
+    <div id="tab-chamados">
+      <div class="kpis">
+        <div class="kpi"><div class="kpi-lbl" style="color:var(--teal)"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2M9 5h6"/></svg>Total</div><div class="kpi-val" id="k-total" style="color:var(--teal)">—</div><div class="kpi-sub">chamados registrados</div></div>
+        <div class="kpi"><div class="kpi-lbl" style="color:var(--amber)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Abertos</div><div class="kpi-val" id="k-open" style="color:var(--amber)">—</div><div class="kpi-sub">aguardando</div></div>
+        <div class="kpi"><div class="kpi-lbl" style="color:var(--purple)"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Em andamento</div><div class="kpi-val" id="k-prog" style="color:var(--purple)">—</div><div class="kpi-sub">em atendimento</div></div>
+        <div class="kpi"><div class="kpi-lbl" style="color:var(--green)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Resolvidos</div><div class="kpi-val" id="k-done" style="color:var(--green)">—</div><div class="kpi-sub">finalizados</div></div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><div class="card-hd-ico"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div><h2>Todos os chamados</h2></div>
+        <div class="filters">
+          <div class="search-b"><input type="text" id="a-search" placeholder="Buscar por título, protocolo, solicitante..." oninput="renderTable()"/></div>
+          <button class="fchip on" onclick="setAFilter('',this)">Todos</button>
+          <button class="fchip" onclick="setAFilter('Aberto',this)">Abertos</button>
+          <button class="fchip" onclick="setAFilter('Em andamento',this)">Em andamento</button>
+          <button class="fchip" onclick="setAFilter('Resolvido',this)">Resolvidos</button>
+          <button class="fchip" onclick="setAFilterPrio('Crítica',this)">⚡ Críticos</button>
+        </div>
+        <div class="table-wrap">
+          <table><thead><tr><th>Protocolo</th><th>Título</th><th>Solicitante</th><th>Categoria</th><th>Prioridade</th><th>Status</th><th>Abertura</th><th></th></tr></thead>
+          <tbody id="t-body"></tbody></table>
+          <div id="t-empty" class="empty-table" style="display:none"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2M9 5h6"/></svg>Nenhum chamado encontrado.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- USUARIOS -->
+    <div id="tab-usuarios" style="display:none">
+      <div class="card">
+        <div class="card-hd"><div class="card-hd-ico"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><h2>Cadastrar novo usuário</h2></div>
+        <div style="padding:1.5rem">
+          <div class="uf-grid">
+            <div class="uf-field"><label>Nome completo</label><input type="text" id="u-nome" placeholder="Nome do colaborador"/></div>
+            <div class="uf-field"><label>E-mail</label><input type="email" id="u-email" placeholder="email@biohealth.com.br"/></div>
+            <div class="uf-field"><label>Senha</label><input type="password" id="u-senha" placeholder="Mínimo 6 caracteres"/></div>
+            <div class="uf-field"><label>Setor</label><input type="text" id="u-setor" placeholder="Ex: Financeiro, RH..."/></div>
+            <div class="uf-field"><label>Perfil</label><select id="u-role"><option value="user">Colaborador</option><option value="admin">Administrador TI</option></select></div>
+          </div>
+          <div class="uf-actions"><button class="btn-cancel-sm" onclick="clearUForm()">Limpar</button><button class="btn-add" onclick="addUser()">Cadastrar usuário</button></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><div class="card-hd-ico"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><h2>Usuários cadastrados</h2></div>
+        <div class="table-wrap">
+          <table><thead><tr><th>Usuário</th><th>Setor</th><th>Perfil</th><th>Status</th><th>Ações</th></tr></thead>
+          <tbody id="u-body"></tbody></table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-hd"><h3 id="m-num">Chamado</h3><button class="modal-close" onclick="closeModal()">×</button></div>
+    <div class="modal-body">
+      <div class="m-row"><span class="m-lbl">Solicitante</span><span class="m-val" id="m-nome"></span></div>
+      <div class="m-row"><span class="m-lbl">E-mail</span><span class="m-val" id="m-email"></span></div>
+      <div class="m-row"><span class="m-lbl">Setor</span><span class="m-val" id="m-setor"></span></div>
+      <div class="m-row"><span class="m-lbl">Categoria</span><span class="m-val" id="m-cat"></span></div>
+      <div class="m-row"><span class="m-lbl">Prioridade</span><span class="m-val" id="m-prio"></span></div>
+      <div class="m-row"><span class="m-lbl">Equipamento</span><span class="m-val" id="m-equip"></span></div>
+      <div class="m-row"><span class="m-lbl">Abertura</span><span class="m-val" id="m-data"></span></div>
+      <div class="m-row"><span class="m-lbl">Descrição</span><span class="m-val desc" id="m-desc"></span></div>
+      <div><div style="font-size:12px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Observação interna</div><textarea class="m-obs" id="m-obs" placeholder="Adicione uma observação..."></textarea></div>
+    </div>
+    <div class="modal-actions">
+      <select class="m-sel" id="m-status"><option value="Aberto">Aberto</option><option value="Em andamento">Em andamento</option><option value="Resolvido">Resolvido</option><option value="Cancelado">Cancelado</option></select>
+      <button class="m-save" onclick="saveModal()">Salvar</button>
+      <button class="m-cancel" onclick="closeModal()">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span id="toast-msg"></span></div>
+
+<script>
+// ⚙️ Troque pela URL do seu backend no Render após o deploy
+const API = 'https://biohealth-ti-api.onrender.com';
+
+var session=null, aFilter='', aFilterPrio='', modalCid=null;
+
+function token(){ return sessionStorage.getItem('bh_token') }
+function headers(){ return {'Content-Type':'application/json','Authorization':'Bearer '+token()} }
+function logout(){ sessionStorage.clear(); window.location.href='login.html' }
+
+async function checkAuth(){
+  var u=sessionStorage.getItem('bh_user');
+  if(!token()||!u){window.location.href='login.html';return}
+  session=JSON.parse(u);
+  if(session.role!=='admin'){window.location.href='portal.html';return}
+  document.getElementById('sb-av').textContent=session.nome.charAt(0).toUpperCase();
+  document.getElementById('sb-uname').textContent=session.nome;
+  await loadStats(); await renderTable();
+}
+
+function prioStyle(p){var m={'Baixa':'background:#D1FAE5;color:#065F46','Média':'background:#E6F6F6;color:#094F52','Alta':'background:#FEF3C7;color:#78350F','Crítica':'background:#FEE2E2;color:#7F1D1D'};return m[p]||'background:#F3F4F6;color:#374151'}
+function statusStyle(s){if(s==='Resolvido')return'background:#D1FAE5;color:#065F46';if(s==='Em andamento')return'background:#EDE9FE;color:#4C1D95';if(s==='Cancelado')return'background:#F3F4F6;color:#374151';return'background:#E6F6F6;color:#094F52'}
+
+function showTab(t){
+  document.getElementById('tab-chamados').style.display=t==='chamados'?'block':'none';
+  document.getElementById('tab-usuarios').style.display=t==='usuarios'?'block':'none';
+  document.getElementById('page-title').textContent=t==='chamados'?'Painel de TI':'Gerenciar Usuários';
+  if(t==='usuarios')renderUsers();
+}
+function setAFilter(f,btn){aFilter=f;aFilterPrio='';document.querySelectorAll('.fchip').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderTable()}
+function setAFilterPrio(p,btn){aFilterPrio=p;aFilter='';document.querySelectorAll('.fchip').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderTable()}
+function filterStatus(s){aFilter=s;aFilterPrio='';showTab('chamados')}
+
+async function loadStats(){
+  try{
+    var r=await fetch(API+'/chamados/stats',{headers:headers()});
+    var d=await r.json();
+    document.getElementById('k-total').textContent=d.total||0;
+    document.getElementById('k-open').textContent=d.abertos||0;
+    document.getElementById('k-prog').textContent=d.em_andamento||0;
+    document.getElementById('k-done').textContent=d.resolvidos||0;
+    document.getElementById('sb-open').textContent=(d.abertos||0)+(d.em_andamento||0);
+  }catch(e){}
+}
+
+async function renderTable(){
+  var q=document.getElementById('a-search').value.trim();
+  var url=API+'/chamados?';
+  if(aFilter) url+='status='+encodeURIComponent(aFilter)+'&';
+  if(aFilterPrio) url+='prioridade='+encodeURIComponent(aFilterPrio)+'&';
+  if(q) url+='q='+encodeURIComponent(q);
+  try{
+    var r=await fetch(url,{headers:headers()});
+    var data=await r.json();
+    var tbody=document.getElementById('t-body');
+    var empty=document.getElementById('t-empty');
+    if(!data.length){tbody.innerHTML='';empty.style.display='block';return}
+    empty.style.display='none';
+    tbody.innerHTML=data.map(t=>`<tr>
+      <td class="td-num">${t.numero}</td>
+      <td><div class="td-title" title="${t.titulo}">${t.titulo}</div></td>
+      <td style="font-size:13px">${t.nome}</td>
+      <td style="font-size:13px;color:var(--gray-600)">${t.categoria}</td>
+      <td><span class="badge" style="${prioStyle(t.prioridade)}">${t.prioridade}</span></td>
+      <td><span class="badge" style="${statusStyle(t.status)}">${t.status}</span></td>
+      <td class="td-date">${t.criado_em}</td>
+      <td><button class="action-btn" onclick='openModal(${JSON.stringify(t)})'>Gerenciar</button></td>
+    </tr>`).join('');
+  }catch(e){}
+}
+
+function openModal(t){
+  modalCid=t.id;
+  document.getElementById('m-num').textContent='Chamado '+t.numero;
+  document.getElementById('m-nome').textContent=t.nome;
+  document.getElementById('m-email').textContent=t.email;
+  document.getElementById('m-setor').textContent=t.setor||'—';
+  document.getElementById('m-cat').textContent=t.categoria;
+  document.getElementById('m-prio').innerHTML=`<span class="badge" style="${prioStyle(t.prioridade)}">${t.prioridade}</span>`;
+  document.getElementById('m-equip').textContent=t.equipamento||'—';
+  document.getElementById('m-data').textContent=t.criado_em;
+  document.getElementById('m-desc').textContent=t.descricao;
+  document.getElementById('m-obs').value=t.observacao||'';
+  document.getElementById('m-status').value=t.status;
+  document.getElementById('overlay').classList.add('open');
+}
+function closeModal(){document.getElementById('overlay').classList.remove('open');modalCid=null}
+
+async function saveModal(){
+  if(!modalCid)return;
+  try{
+    var r=await fetch(API+'/chamados/'+modalCid,{method:'PUT',headers:headers(),body:JSON.stringify({
+      status:document.getElementById('m-status').value,
+      observacao:document.getElementById('m-obs').value
+    })});
+    if(!r.ok){var e=await r.json();showToast('Erro: '+(e.detail||'Falha ao salvar'));return}
+    closeModal();await loadStats();await renderTable();showToast('Chamado atualizado com sucesso!');
+  }catch(e){showToast('Erro de conexão.')}
+}
+
+async function renderUsers(){
+  try{
+    var r=await fetch(API+'/usuarios',{headers:headers()});
+    var users=await r.json();
+    var tbody=document.getElementById('u-body');
+    if(!users.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gray-400)">Nenhum usuário cadastrado.</td></tr>';return}
+    tbody.innerHTML=users.map(u=>{
+      var roleLabel=u.role==='admin'?`<span class="badge" style="background:var(--purple-bg);color:var(--purple)">Admin TI</span>`:`<span class="badge" style="background:var(--teal-bg);color:var(--teal-dk)">Colaborador</span>`;
+      var statusLabel=u.ativo?`<span class="badge" style="background:var(--green-bg);color:var(--green)">Ativo</span>`:`<span class="badge" style="background:#F3F4F6;color:#374151">Inativo</span>`;
+      var isMe=session&&u.email===session.email;
+      var actions=isMe?'<span style="font-size:12px;color:var(--gray-400)">—</span>':`
+        <button class="${u.ativo?'toggle-btn ton':'toggle-btn toff'}" onclick="toggleUser(${u.id},${u.ativo})">${u.ativo?'Desativar':'Ativar'}</button>
+        <button class="del-btn" onclick="deleteUser(${u.id})">Remover</button>`;
+      return`<tr><td><div class="u-info"><div class="u-av">${u.nome.charAt(0).toUpperCase()}</div><div><div style="font-weight:500;font-size:13px">${u.nome}${isMe?' <span style="font-size:11px;color:var(--gray-400)">(você)</span>':''}</div><div style="font-size:12px;color:var(--gray-400)">${u.email}</div></div></div></td><td style="font-size:13px;color:var(--gray-600)">${u.setor||'—'}</td><td>${roleLabel}</td><td>${statusLabel}</td><td style="display:flex;gap:6px;align-items:center;padding:12px 14px">${actions}</td></tr>`;
+    }).join('');
+  }catch(e){showToast('Erro ao carregar usuários.')}
+}
+
+async function addUser(){
+  var nome=document.getElementById('u-nome').value.trim();
+  var email=document.getElementById('u-email').value.trim();
+  var senha=document.getElementById('u-senha').value;
+  var setor=document.getElementById('u-setor').value.trim();
+  var role=document.getElementById('u-role').value;
+  if(!nome||!email||!senha){alert('Preencha nome, e-mail e senha.');return}
+  try{
+    var r=await fetch(API+'/usuarios',{method:'POST',headers:headers(),body:JSON.stringify({nome,email,senha,setor:setor||null,role})});
+    var d=await r.json();
+    if(!r.ok){showToast('Erro: '+(d.detail||'Falha ao criar'));return}
+    clearUForm();renderUsers();showToast('Usuário cadastrado com sucesso!');
+  }catch(e){showToast('Erro de conexão.')}
+}
+
+async function toggleUser(id,ativo){
+  try{
+    await fetch(API+'/usuarios/'+id,{method:'PUT',headers:headers(),body:JSON.stringify({ativo:!ativo})});
+    renderUsers();showToast(ativo?'Usuário desativado.':'Usuário ativado!');
+  }catch(e){showToast('Erro de conexão.')}
+}
+
+async function deleteUser(id){
+  if(!confirm('Remover este usuário?'))return;
+  try{
+    await fetch(API+'/usuarios/'+id,{method:'DELETE',headers:headers()});
+    renderUsers();showToast('Usuário removido.');
+  }catch(e){showToast('Erro de conexão.')}
+}
+
+function clearUForm(){['u-nome','u-email','u-senha','u-setor'].forEach(id=>document.getElementById(id).value='');document.getElementById('u-role').value='user'}
+function showToast(msg){var t=document.getElementById('toast');document.getElementById('toast-msg').textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800)}
+
+checkAuth();
+setInterval(()=>{loadStats();if(document.getElementById('tab-chamados').style.display!=='none')renderTable()},30000);
+</script>
+</body>
+</html>

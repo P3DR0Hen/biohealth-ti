@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Bio Health — Central de TI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --teal:#0D7377;--teal-lt:#14ACAC;--teal-bg:#E6F6F6;--teal-dk:#094F52;
+  --green:#32936F;--green-bg:#E8F5EF;--amber:#B45309;--amber-bg:#FEF3C7;
+  --red:#B91C1C;--red-bg:#FEE2E2;
+  --gray-50:#F8FAFA;--gray-100:#EEF2F2;--gray-200:#D9E2E2;
+  --gray-400:#8FA8A8;--gray-600:#4A6565;--gray-800:#1F3333;
+  --shadow:0 1px 4px rgba(13,115,119,.08),0 4px 16px rgba(13,115,119,.06);
+}
+body{font-family:'DM Sans',sans-serif;background:var(--gray-50);color:var(--gray-800);min-height:100vh;font-size:15px}
+header{background:var(--teal-dk);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:58px;position:sticky;top:0;z-index:200}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--teal-lt),var(--teal));border-radius:9px;display:flex;align-items:center;justify-content:center}
+.logo-mark svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.logo-text{font-family:'DM Serif Display',serif;font-size:18px;color:#fff}
+.logo-sub{font-size:11px;color:rgba(255,255,255,.5);margin-left:4px;align-self:flex-end;padding-bottom:2px}
+.hdr-right{display:flex;align-items:center;gap:10px}
+.user-pill{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:5px 12px 5px 5px}
+.user-av{width:26px;height:26px;border-radius:50%;background:var(--teal-lt);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
+.user-name{font-size:12px;color:rgba(255,255,255,.85);font-weight:500}
+.logout-btn{border:none;background:rgba(255,255,255,.08);border-radius:7px;padding:6px 12px;font-size:12px;font-weight:500;cursor:pointer;color:rgba(255,255,255,.65);font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:5px;transition:all .15s}
+.logout-btn:hover{background:rgba(255,255,255,.15);color:#fff}
+.logout-btn svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.hero{background:linear-gradient(160deg,var(--teal-dk) 0%,var(--teal) 100%);padding:3.5rem 2rem 5rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1' fill='rgba(255,255,255,.06)'/%3E%3C/svg%3E")}
+.hero-label{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:4px 14px;font-size:12px;font-weight:500;color:rgba(255,255,255,.85);letter-spacing:.06em;text-transform:uppercase;margin-bottom:16px}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(26px,5vw,42px);color:#fff;line-height:1.18;margin-bottom:10px}
+.hero h1 em{font-style:normal;color:var(--teal-lt)}
+.hero p{font-size:15px;color:rgba(255,255,255,.7);max-width:440px;margin:0 auto}
+.main{max-width:860px;margin:-2.5rem auto 3rem;padding:0 1.5rem}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:1.5rem}
+.stat-card{background:#fff;border:1px solid var(--gray-200);border-radius:10px;padding:1rem 1.25rem;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow)}
+.stat-ico{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.stat-ico svg{width:20px;height:20px;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.stat-lbl{font-size:11px;color:var(--gray-600);margin-bottom:2px}
+.stat-val{font-size:20px;font-weight:600;font-family:'DM Serif Display',serif}
+.card{background:#fff;border:1px solid var(--gray-200);border-radius:14px;margin-bottom:1.25rem;box-shadow:var(--shadow);overflow:hidden}
+.card-hd{padding:1.1rem 1.5rem;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;gap:10px}
+.card-hd-ico{width:30px;height:30px;background:var(--teal-bg);border-radius:7px;display:flex;align-items:center;justify-content:center}
+.card-hd-ico svg{width:15px;height:15px;fill:none;stroke:var(--teal);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.card-hd h2{font-size:15px;font-weight:600}
+.card-body{padding:1.5rem}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:12px;font-weight:600;color:var(--gray-600);text-transform:uppercase;letter-spacing:.05em}
+.field label .req{color:var(--red);margin-left:2px}
+.field input,.field textarea{border:1px solid var(--gray-200);border-radius:7px;padding:10px 12px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--gray-800);background:#fff;outline:none;transition:border .15s,box-shadow .15s;width:100%}
+.field input:focus,.field textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(13,115,119,.1)}
+.field textarea{min-height:100px;resize:vertical}
+.field input::placeholder,.field textarea::placeholder{color:var(--gray-400)}
+.field input[readonly]{background:var(--gray-50);color:var(--gray-600)}
+.sdiv{display:flex;align-items:center;gap:12px;margin:4px 0 12px}
+.sdiv span{font-size:11px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:.07em;white-space:nowrap}
+.sdiv::before,.sdiv::after{content:'';flex:1;height:1px;background:var(--gray-100)}
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.cat-btn{border:1px solid var(--gray-200);border-radius:9px;padding:12px 6px;text-align:center;cursor:pointer;background:#fff;font-size:12px;font-weight:500;color:var(--gray-600);transition:all .15s;display:flex;flex-direction:column;align-items:center;gap:7px}
+.cat-btn:hover{background:var(--teal-bg);border-color:var(--teal-lt);color:var(--teal)}
+.cat-btn.sel{border:2px solid var(--teal);background:var(--teal-bg);color:var(--teal-dk);font-weight:600}
+.cat-btn svg{width:22px;height:22px;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;stroke:currentColor}
+.prio-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.prio-btn{border:1px solid var(--gray-200);border-radius:9px;padding:11px 6px;cursor:pointer;background:#fff;font-size:13px;font-weight:500;color:var(--gray-600);transition:all .15s;display:flex;align-items:center;justify-content:center;gap:7px}
+.prio-btn:hover{background:var(--gray-100)}
+.pdot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.prio-btn.pb{border:2px solid #059669;background:var(--green-bg);color:#065F46;font-weight:600}
+.prio-btn.pm{border:2px solid var(--teal);background:var(--teal-bg);color:var(--teal-dk);font-weight:600}
+.prio-btn.pa{border:2px solid var(--amber);background:var(--amber-bg);color:#78350F;font-weight:600}
+.prio-btn.pc{border:2px solid var(--red);background:var(--red-bg);color:#7F1D1D;font-weight:600}
+.btn-primary{width:100%;padding:13px;background:var(--teal);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s}
+.btn-primary:hover{background:var(--teal-dk)}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed}
+.btn-primary svg{width:17px;height:17px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#success{display:none}
+.success-top{text-align:center;padding:2.5rem 1.5rem 1.5rem;border-bottom:1px solid var(--gray-100)}
+.success-ring{width:72px;height:72px;border-radius:50%;background:var(--green-bg);border:2px solid #6EE7B7;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
+.success-ring svg{width:32px;height:32px;fill:none;stroke:var(--green);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.success-num{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:6px}
+.success-msg{font-size:14px;color:var(--gray-600);line-height:1.6}
+.email-notice{display:inline-flex;align-items:center;gap:6px;background:var(--teal-bg);color:var(--teal-dk);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:500;margin-top:10px}
+.email-notice svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ticket-rows{padding:1.25rem 1.5rem}
+.ticket-rows h3{font-size:11px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px}
+.trow{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--gray-100);font-size:14px}
+.trow:last-child{border-bottom:none}
+.trow .tk{color:var(--gray-600)}
+.trow .tv{font-weight:500;text-align:right;max-width:60%}
+.badge{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px}
+.success-actions{padding:0 1.5rem 1.5rem;display:flex;gap:10px}
+.btn-sec{flex:1;padding:11px;border:1px solid var(--gray-200);border-radius:8px;background:#fff;font-size:14px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;color:var(--gray-800)}
+.btn-sec:hover{background:var(--gray-100)}
+.btn-prim{flex:1;padding:11px;border:none;border-radius:8px;background:var(--teal);font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;color:#fff}
+.btn-prim:hover{background:var(--teal-dk)}
+.hist-filters{padding:.75rem 1.5rem;border-bottom:1px solid var(--gray-100);display:flex;gap:8px;flex-wrap:wrap}
+.fchip{border:1px solid var(--gray-200);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:500;cursor:pointer;background:#fff;color:var(--gray-600);font-family:'DM Sans',sans-serif;transition:all .12s}
+.fchip:hover,.fchip.on{background:var(--teal-bg);border-color:var(--teal-lt);color:var(--teal-dk)}
+.search-wrap{padding:.75rem 1.5rem;border-bottom:1px solid var(--gray-100)}
+.search-wrap input{width:100%;border:1px solid var(--gray-200);border-radius:7px;padding:9px 12px 9px 36px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238FA8A8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat 10px center;transition:border .15s}
+.search-wrap input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(13,115,119,.1)}
+.hist-item{display:flex;align-items:center;gap:12px;padding:13px 1.5rem;border-bottom:1px solid var(--gray-100);transition:background .1s}
+.hist-item:last-child{border-bottom:none}
+.hist-item:hover{background:var(--gray-50)}
+.hi-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.hi-info{flex:1}
+.hi-title{font-size:14px;font-weight:500}
+.hi-meta{font-size:12px;color:var(--gray-400);margin-top:2px}
+.empty{padding:2.5rem;text-align:center;color:var(--gray-400);font-size:14px}
+.empty svg{width:36px;height:36px;fill:none;stroke:var(--gray-200);stroke-width:1.5;display:block;margin:0 auto 10px}
+.loading{opacity:.5;pointer-events:none}
+footer{text-align:center;padding:2rem;font-size:12px;color:var(--gray-400)}
+footer strong{color:var(--teal)}
+@media(max-width:640px){
+  .stats{grid-template-columns:1fr}.g2,.cat-grid,.prio-grid{grid-template-columns:repeat(2,1fr)}
+  .success-actions{flex-direction:column}header{padding:0 1rem}.hero{padding:2.5rem 1rem 4rem}
+}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="portal.html">
+    <div class="logo-mark"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+    <span class="logo-text">Bio Health</span><span class="logo-sub">TI</span>
+  </a>
+  <div class="hdr-right">
+    <div class="user-pill">
+      <div class="user-av" id="user-av">?</div>
+      <span class="user-name" id="user-name">...</span>
+    </div>
+    <button class="logout-btn" onclick="logout()">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sair
+    </button>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-label">Suporte de TI</div>
+  <h1>Central de atendimento<br><em>Bio Health</em></h1>
+  <p>Registre sua solicitação e nossa equipe técnica retornará em até 4 horas.</p>
+</div>
+
+<div class="main">
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-ico" style="background:var(--teal-bg)"><svg style="stroke:var(--teal)" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2M9 5h6"/></svg></div>
+      <div><div class="stat-lbl">Meus chamados abertos</div><div class="stat-val" id="cnt-open" style="color:var(--teal)">—</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-ico" style="background:var(--green-bg)"><svg style="stroke:var(--green)" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div><div class="stat-lbl">Resolvidos</div><div class="stat-val" id="cnt-done" style="color:var(--green)">—</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-ico" style="background:var(--amber-bg)"><svg style="stroke:var(--amber)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <div><div class="stat-lbl">Tempo médio de resposta</div><div class="stat-val" style="color:var(--amber)">4h</div></div>
+    </div>
+  </div>
+
+  <div class="card" id="form-card">
+    <div class="card-hd"><div class="card-hd-ico"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><h2>Abrir novo chamado</h2></div>
+    <div class="card-body" style="display:flex;flex-direction:column;gap:20px">
+      <div>
+        <div class="sdiv"><span>Solicitante</span></div>
+        <div class="g2" style="gap:12px">
+          <div class="field"><label>Nome</label><input type="text" id="f-nome" readonly/></div>
+          <div class="field"><label>E-mail</label><input type="email" id="f-email" readonly/></div>
+          <div class="field"><label>Setor</label><input type="text" id="f-setor" readonly/></div>
+          <div class="field"><label>Ramal / Telefone</label><input type="text" id="f-ramal" placeholder="Ex: 1234"/></div>
+        </div>
+      </div>
+      <div>
+        <div class="sdiv"><span>Categoria</span></div>
+        <div class="cat-grid">
+          <button class="cat-btn" onclick="selCat(this,'Hardware')"><svg viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M2 20h20M8 8V6a4 4 0 0 1 8 0v2"/></svg>Hardware</button>
+          <button class="cat-btn" onclick="selCat(this,'Software')"><svg viewBox="0 0 24 24"><path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1"/><path d="M16 3h1a2 2 0 0 1 2 2v5a2 2 0 0 0 2 2 2 2 0 0 0-2 2v5a2 2 0 0 1-2 2h-1"/></svg>Software</button>
+          <button class="cat-btn" onclick="selCat(this,'Rede / Internet')"><svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1"/></svg>Rede</button>
+          <button class="cat-btn" onclick="selCat(this,'E-mail')"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>E-mail</button>
+          <button class="cat-btn" onclick="selCat(this,'Impressora')"><svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Impressora</button>
+          <button class="cat-btn" onclick="selCat(this,'Acesso / Senha')"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Acesso/Senha</button>
+          <button class="cat-btn" onclick="selCat(this,'Telefonia')"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.5 2 2 0 0 1 3.6 1.3h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Telefonia</button>
+          <button class="cat-btn" onclick="selCat(this,'Outro')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Outro</button>
+        </div>
+      </div>
+      <div>
+        <div class="sdiv"><span>Prioridade</span></div>
+        <div class="prio-grid">
+          <button class="prio-btn" onclick="selPrio(this,'Baixa','pb','#059669')"><div class="pdot" style="background:#059669"></div>Baixa</button>
+          <button class="prio-btn" onclick="selPrio(this,'Média','pm','#0D7377')"><div class="pdot" style="background:#0D7377"></div>Média</button>
+          <button class="prio-btn" onclick="selPrio(this,'Alta','pa','#B45309')"><div class="pdot" style="background:#B45309"></div>Alta</button>
+          <button class="prio-btn" onclick="selPrio(this,'Crítica','pc','#B91C1C')"><div class="pdot" style="background:#B91C1C"></div>Crítica</button>
+        </div>
+      </div>
+      <div>
+        <div class="sdiv"><span>Detalhes</span></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div class="field"><label>Título <span class="req">*</span></label><input type="text" id="f-titulo" placeholder="Resumo curto do problema"/></div>
+          <div class="field"><label>Descrição <span class="req">*</span></label><textarea id="f-desc" placeholder="O que aconteceu, quando começou, mensagens de erro..."></textarea></div>
+          <div class="field"><label>Equipamento / Patrimônio</label><input type="text" id="f-equip" placeholder="Ex: Notebook Dell — patrimônio 12345"/></div>
+        </div>
+      </div>
+      <button class="btn-primary" id="btn-enviar" onclick="enviar()">
+        <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Abrir chamado
+      </button>
+    </div>
+  </div>
+
+  <div class="card" id="success">
+    <div class="success-top">
+      <div class="success-ring"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="success-num" id="s-num">Chamado #000000</div>
+      <div class="success-msg">Seu chamado foi registrado com sucesso!<br>Nossa equipe de TI entrará em contato em breve.</div>
+      <div class="email-notice"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Confirmação enviada para <span id="s-email" style="font-weight:600;margin-left:3px"></span></div>
+    </div>
+    <div class="ticket-rows"><h3>Resumo</h3><div id="s-rows"></div></div>
+    <div class="success-actions">
+      <button class="btn-sec" onclick="novoChamado()">Abrir outro chamado</button>
+      <button class="btn-prim" onclick="renderHist()">Ver meus chamados</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><div class="card-hd-ico"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div><h2>Meus chamados</h2></div>
+    <div class="search-wrap"><input type="text" id="hist-search" placeholder="Buscar chamados..." oninput="renderHist()"/></div>
+    <div class="hist-filters">
+      <button class="fchip on" onclick="setFilter('',this)">Todos</button>
+      <button class="fchip" onclick="setFilter('Aberto',this)">Abertos</button>
+      <button class="fchip" onclick="setFilter('Em andamento',this)">Em andamento</button>
+      <button class="fchip" onclick="setFilter('Resolvido',this)">Resolvidos</button>
+    </div>
+    <div id="hist-list"><div class="empty"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2M9 5h6"/></svg>Nenhum chamado ainda.</div></div>
+  </div>
+</div>
+<footer>© 2026 <strong>Bio Health</strong> — Departamento de Tecnologia da Informação</footer>
+
+<script>
+// ⚙️ Troque pela URL do seu backend no Render após o deploy
+const API = 'https://biohealth-ti-api.onrender.com';
+
+var session = null;
+var filterSel = '';
+var catSel = '', prioSel = '', prioCls = '', prioColor = '';
+
+function token(){ return sessionStorage.getItem('bh_token') }
+function headers(){ return { 'Content-Type':'application/json', 'Authorization':'Bearer '+token() } }
+
+function logout(){ sessionStorage.clear(); window.location.href='login.html' }
+
+async function checkAuth(){
+  var u = sessionStorage.getItem('bh_user');
+  if(!token() || !u){ window.location.href='login.html'; return }
+  session = JSON.parse(u);
+  if(session.role === 'admin'){ window.location.href='admin.html'; return }
+  document.getElementById('user-av').textContent = session.nome.charAt(0).toUpperCase();
+  document.getElementById('user-name').textContent = session.nome;
+  document.getElementById('f-nome').value  = session.nome;
+  document.getElementById('f-email').value = session.email;
+  document.getElementById('f-setor').value = session.setor || '';
+  await loadStats();
+  await renderHist();
+}
+
+async function loadStats(){
+  try{
+    var r = await fetch(API+'/chamados/stats', {headers:headers()});
+    var d = await r.json();
+    document.getElementById('cnt-open').textContent = d.abertos || 0;
+    document.getElementById('cnt-done').textContent = d.resolvidos || 0;
+  }catch(e){}
+}
+
+function selCat(btn,cat){ document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('sel')); btn.classList.add('sel'); catSel=cat }
+function selPrio(btn,p,cls,c){ document.querySelectorAll('.prio-btn').forEach(b=>b.className='prio-btn'); btn.classList.add(cls); prioSel=p; prioCls=cls; prioColor=c }
+function setFilter(f,btn){ filterSel=f; document.querySelectorAll('.fchip').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); renderHist() }
+
+function prioStyle(p){
+  var m={'Baixa':'background:#D1FAE5;color:#065F46','Média':'background:#E6F6F6;color:#094F52','Alta':'background:#FEF3C7;color:#78350F','Crítica':'background:#FEE2E2;color:#7F1D1D'};
+  return m[p]||'background:#F3F4F6;color:#374151';
+}
+function statusStyle(s){
+  if(s==='Resolvido') return 'background:#D1FAE5;color:#065F46';
+  if(s==='Em andamento') return 'background:#EDE9FE;color:#4C1D95';
+  return 'background:#E6F6F6;color:#094F52';
+}
+function prioColorDot(p){
+  return {'Baixa':'#059669','Média':'#0D7377','Alta':'#B45309','Crítica':'#B91C1C'}[p]||'#8FA8A8';
+}
+
+async function enviar(){
+  var titulo = document.getElementById('f-titulo').value.trim();
+  var desc   = document.getElementById('f-desc').value.trim();
+  if(!titulo||!desc){ alert('Preencha o título e a descrição.'); return }
+  if(!catSel||!prioSel){ alert('Selecione a categoria e a prioridade.'); return }
+  var btn = document.getElementById('btn-enviar');
+  btn.disabled=true; btn.textContent='Enviando...';
+  try{
+    var r = await fetch(API+'/chamados',{method:'POST',headers:headers(),body:JSON.stringify({
+      ramal: document.getElementById('f-ramal').value.trim()||null,
+      categoria: catSel, prioridade: prioSel,
+      titulo, descricao: desc,
+      equipamento: document.getElementById('f-equip').value.trim()||null
+    })});
+    var d = await r.json();
+    if(!r.ok){ alert(d.detail||'Erro ao abrir chamado.'); btn.disabled=false; btn.textContent='Abrir chamado'; return }
+    document.getElementById('s-num').textContent = 'Chamado '+d.numero;
+    document.getElementById('s-email').textContent = session.email;
+    document.getElementById('s-rows').innerHTML =
+      row('Solicitante',session.nome)+row('Categoria',catSel)+
+      `<div class="trow"><span class="tk">Prioridade</span><span class="tv"><span class="badge" style="${prioStyle(prioSel)}">${prioSel}</span></span></div>`+
+      row('Protocolo',d.numero);
+    document.getElementById('form-card').style.display='none';
+    document.getElementById('success').style.display='block';
+    await loadStats(); await renderHist();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }catch(e){ alert('Erro de conexão com o servidor.'); btn.disabled=false; btn.textContent='Abrir chamado' }
+}
+
+function row(k,v){ return `<div class="trow"><span class="tk">${k}</span><span class="tv">${v}</span></div>` }
+
+function novoChamado(){
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('sel'));
+  document.querySelectorAll('.prio-btn').forEach(b=>b.className='prio-btn');
+  ['f-titulo','f-desc','f-equip','f-ramal'].forEach(id=>document.getElementById(id).value='');
+  catSel='';prioSel='';prioCls='';prioColor='';
+  var btn=document.getElementById('btn-enviar');btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" style="width:17px;height:17px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Abrir chamado';
+  document.getElementById('success').style.display='none';
+  document.getElementById('form-card').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+async function renderHist(){
+  var q = document.getElementById('hist-search').value.trim();
+  var url = API+'/chamados?';
+  if(filterSel) url += 'status='+encodeURIComponent(filterSel)+'&';
+  if(q) url += 'q='+encodeURIComponent(q);
+  var el = document.getElementById('hist-list');
+  try{
+    var r = await fetch(url,{headers:headers()});
+    var data = await r.json();
+    if(!data.length){ el.innerHTML='<div class="empty"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2M9 5h6"/></svg>Nenhum chamado encontrado.</div>'; return }
+    el.innerHTML = data.map(t=>`
+      <div class="hist-item">
+        <div class="hi-dot" style="background:${prioColorDot(t.prioridade)}"></div>
+        <div class="hi-info"><div class="hi-title">${t.titulo}</div><div class="hi-meta">${t.numero} · ${t.categoria} · ${t.criado_em}</div></div>
+        <span class="badge" style="${statusStyle(t.status)}">${t.status}</span>
+      </div>`).join('');
+  }catch(e){ el.innerHTML='<div class="empty">Erro ao carregar chamados.</div>' }
+}
+
+checkAuth();
+</script>
+</body>
+</html>
