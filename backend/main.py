@@ -195,17 +195,13 @@ class ChamadoUpdate(BaseModel):
 @app.post("/setup-admin")
 def setup_admin(conn=Depends(get_db)):
     cur = conn.cursor()
-    cur.execute("SELECT id FROM usuarios WHERE role='admin' LIMIT 1")
-    if cur.fetchone():
-        cur.close()
-        return {"mensagem": "Admin já existe!"}
     h = pwd_ctx.hash("admin123")
     cur.execute(
-        "INSERT INTO usuarios (nome,email,senha_hash,setor,role) VALUES (%s,%s,%s,'TI','admin')",
-        ("Admin TI", "admin@biohealth.com.br", h)
+        "UPDATE usuarios SET senha_hash=%s WHERE email=%s",
+        (h, "admin@biohealth.com.br")
     )
     cur.close()
-    return {"mensagem": "Admin criado com sucesso!"}
+    return {"mensagem": "Senha redefinida com sucesso!"}
 def health():
     return {"status": "ok", "sistema": "Bio Health TI API"}
 
