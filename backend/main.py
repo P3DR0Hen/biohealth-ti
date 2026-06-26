@@ -195,19 +195,17 @@ class ChamadoUpdate(BaseModel):
 @app.post("/setup-admin")
 def setup_admin(conn=Depends(get_db)):
     cur = conn.cursor(cursor_factory=RealDictCursor)
-    # Verifica o usuário existente
-    cur.execute("SELECT id, email, role, ativo FROM usuarios WHERE email='admin@biohealth.com.br'")
-    user = cur.fetchone()
-    if not user:
-        return {"mensagem": "Usuário não encontrado!"}
-    # Gera nova hash e atualiza
+    # Lista todos os usuários existentes
+    cur.execute("SELECT id, email, role, ativo FROM usuarios")
+    users = cur.fetchall()
+    # Cria o admin
     h = pwd_ctx.hash("admin123")
-    cur.execute("UPDATE usuarios SET senha_hash=%s, ativo=TRUE WHERE email=%s", (h, "admin@biohealth.com.br"))
-    # Confirma a atualização
-    cur.execute("SELECT id, email, role, ativo FROM usuarios WHERE email='admin@biohealth.com.br'")
-    updated = cur.fetchone()
+    cur.execute(
+        "INSERT INTO usuarios (nome,email,senha_hash,setor,role,ativo) VALUES (%s,%s,%s,%s,%s,%s) ON CONFLICT (email) DO UPDATE SET senha_hash=%s, ativo=TRUE, role='admin'",
+        ("Admin TI", "admin@biohealth.com.br", h, "TI", "admin", True, h)
+    )
     cur.close()
-    return {"mensagem": "Senha atualizada!", "usuario": updated}
+    return {"mensagem": "Admin criado/atualizado!", "usuarios_existentes": users}
 def health():
     return {"status": "ok", "sistema": "Bio Health TI API"}
 
