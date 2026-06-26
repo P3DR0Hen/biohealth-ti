@@ -194,14 +194,20 @@ class ChamadoUpdate(BaseModel):
 @app.get("/")
 @app.post("/setup-admin")
 def setup_admin(conn=Depends(get_db)):
-    cur = conn.cursor()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+    # Verifica o usuário existente
+    cur.execute("SELECT id, email, role, ativo FROM usuarios WHERE email='admin@biohealth.com.br'")
+    user = cur.fetchone()
+    if not user:
+        return {"mensagem": "Usuário não encontrado!"}
+    # Gera nova hash e atualiza
     h = pwd_ctx.hash("admin123")
-    cur.execute(
-        "UPDATE usuarios SET senha_hash=%s WHERE email=%s",
-        (h, "admin@biohealth.com.br")
-    )
+    cur.execute("UPDATE usuarios SET senha_hash=%s, ativo=TRUE WHERE email=%s", (h, "admin@biohealth.com.br"))
+    # Confirma a atualização
+    cur.execute("SELECT id, email, role, ativo FROM usuarios WHERE email='admin@biohealth.com.br'")
+    updated = cur.fetchone()
     cur.close()
-    return {"mensagem": "Senha redefinida com sucesso!"}
+    return {"mensagem": "Senha atualizada!", "usuario": updated}
 def health():
     return {"status": "ok", "sistema": "Bio Health TI API"}
 
