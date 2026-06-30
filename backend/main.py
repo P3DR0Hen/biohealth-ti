@@ -217,7 +217,7 @@ def login(body: LoginInput, conn=Depends(get_db)):
     cur.close()
     if not user or not pwd_ctx.verify(body.senha, user["senha_hash"]):
         raise HTTPException(status_code=401, detail="E-mail ou senha incorretos.")
-   token = criar_token({"sub": str(user["id"]), "role": user["role"]})
+    token = criar_token({"sub": str(user["id"]), "role": user["role"]})
     return {
         "token": token,
         "usuario": {"id": user["id"], "nome": user["nome"], "email": user["email"], "setor": user["setor"], "role": user["role"]}
