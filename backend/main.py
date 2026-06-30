@@ -142,7 +142,7 @@ def get_token(request: Request) -> str:
 def usuario_atual(request: Request, conn=Depends(get_db)):
     payload = verificar_token(get_token(request))
     cur = conn.cursor(cursor_factory=RealDictCursor)
-    cur.execute("SELECT * FROM usuarios WHERE id=%s AND ativo=TRUE", (int(payload.get("sub")),))
+    cur.execute("SELECT * FROM usuarios WHERE id=%s AND ativo=TRUE", (payload.get("sub"),))
     user = cur.fetchone()
     cur.close()
     if not user:
